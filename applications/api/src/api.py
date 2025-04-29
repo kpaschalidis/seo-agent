@@ -6,6 +6,7 @@ from threading import Thread
 from queue import Queue
 import uuid
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from .seo_analysis import SEOAnalysisTools, create_seo_analysis_crew
 from dotenv import load_dotenv
 
@@ -15,6 +16,7 @@ load_dotenv()
 PORT = os.getenv("PORT")
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # In-memory store for analysis results
 analysis_results = {}

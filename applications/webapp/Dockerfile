@@ -1,53 +1,39 @@
-# Use Node.js LTS version as the base image
 FROM node:18-alpine AS base
 
-# Set working directory
 WORKDIR /app
 
-# Install dependencies
 FROM base AS deps
-COPY package.json package-lock.json* ./
+COPY ./applications/webapp/package.json ./applications/webapp/package-lock.json* ./
 RUN npm ci
 
-# Build the application
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY ./applications/webapp .
 
-# Set environment variables for build
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-# Build the Next.js application
-RUN npm run build
+RUN ls -l && npm run build
 
-# Production image
 FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Create a non-root user to run the app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
-# Copy necessary files from builder stage
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Set environment variables
-# These can be overridden at runtime
 ENV PORT 3000
 ENV API_URL http://localhost:5000/api
 
-# Expose port
 EXPOSE 3000
 
-# Set hostname to listen on all interfaces
 ENV HOSTNAME "0.0.0.0"
 
-# Start the Next.js application
 CMD ["node", "server.js"]

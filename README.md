@@ -7,6 +7,7 @@ Prototype for the SEO Analysis Crew powered by CrewAI. Leverages GPT-4 to perfor
 root/
   applications/
     api/      # Flask + CrewAI SEO analysis API
+  frontend/   # Next.js + Tailwind CSS frontend application
 ```
 
 ## API
@@ -20,8 +21,6 @@ Analyzes landing pages for SEO optimization using CrewAI agents and provides str
 pip install -r requirements.txt
 ```
 
-> Make sure you have Python 3.10+ installed. Recommended 3.12.3.
-
 ### 2. Set up environment variables
 
 Create a `.env` file in `applications/api/` with the following content:
@@ -31,14 +30,15 @@ OPENAI_API_KEY=your-openai-key
 PORT=5000
 ```
 
-### 3. Run the API server
+### Run with Docker Compose
 
 ```bash
-cd applications/api
-python -m applications.api.src.api
+docker-compose up -d
 ```
 
-By default, the server will start at `http://localhost:5000`.
+This will start both the frontend and backend services. The frontend will be available at http://localhost:3000 and the backend API at http://localhost:5000.
+
+The frontend will be available at http://localhost:3000.
 
 ## API Endpoints
 

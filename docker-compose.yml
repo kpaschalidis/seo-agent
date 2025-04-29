@@ -21,11 +21,6 @@ services:
       - "5001:5000"
     env_file:
       - ./applications/api/.env
-    environment:
-      - PORT=5000
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - MODEL_NAME=${MODEL_NAME:-gpt-4o}
-      - MODEL_TEMPERATURE=${MODEL_TEMPERATURE:-0.2}
     restart: unless-stopped
     networks:
       - seo-analysis-network

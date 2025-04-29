@@ -27,7 +27,7 @@ Create a `.env` file in `applications/api/` with the following content:
 
 ```bash
 OPENAI_API_KEY=your-openai-key
-PORT=5000
+PORT=5001
 ```
 
 ### Run with Docker Compose
